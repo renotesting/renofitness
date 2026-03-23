@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "npm": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-npm"],
+      "description": "Node Package Manager - inspect packages, dependencies, and vulnerability reports",
+      "env": {
+        "NODE_OPTIONS": "--max-old-space-size=4096"
+      }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-playwright"],
+      "description": "Playwright - web automation, browser testing, and E2E testing",
+      "env": {
+        "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "false"
+      }
+    }
+  }
+}
