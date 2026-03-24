@@ -1,0 +1,113 @@
+// This is your Prisma schema file
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Users & Authentication
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  password  String
+  name      String?
+  role      Role       @default(MEMBER)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  member    Member?
+  bookings  Booking[]
+
+  @@map("users")
+}
+
+enum Role {
+  MEMBER
+  ADMIN
+  INSTRUCTOR
+}
+
+// Member Profiles
+model Member {
+  id        String    @id @default(cuid())
+  userId    String    @unique
+  phone     String?
+  joinDate  DateTime  @default(now())
+  status    String    @default("active") // active, inactive, suspended
+  bio       String?
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bookings  Booking[]
+
+  @@map("members")
+}
+
+// Fitness Classes
+model Class {
+  id          String     @id @default(cuid())
+  name        String
+  description String?
+  maxCapacity Int        @default(20)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  schedules ClassSchedule[]
+
+  @@map("classes")
+}
+
+// Class Schedules
+model ClassSchedule {
+  id            String    @id @default(cuid())
+  classId       String
+  date          DateTime
+  startTime     DateTime
+  endTime       DateTime
+  availableSlots Int
+
+  class     Class     @relation(fields: [classId], references: [id], onDelete: Cascade)
+  bookings  Booking[]
+
+  @@map("class_schedules")
+  @@index([classId])
+  @@index([date])
+}
+
+// Member Bookings
+model Booking {
+  id                String    @id @default(cuid())
+  memberId          String
+  classScheduleId   String
+  bookingDate       DateTime  @default(now())
+  status            String    @default("confirmed") // confirmed, cancelled, attended
+  paymentId         String?
+
+  member          Member          @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  classSchedule   ClassSchedule   @relation(fields: [classScheduleId], references: [id], onDelete: Cascade)
+  payment         Payment?        @relation(fields: [paymentId], references: [id])
+
+  @@map("bookings")
+  @@unique([memberId, classScheduleId])
+  @@index([memberId])
+  @@index([classScheduleId])
+}
+
+// Payments
+model Payment {
+  id                String    @id @default(cuid())
+  amount            Float
+  currency          String    @default("USD")
+  status            String    @default("pending") // pending, completed, failed, refunded
+  stripeId          String?   @unique
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  booking           Booking   @relation(fields: [id], references: [paymentId], onDelete: Cascade)
+
+  @@map("payments")
+}
