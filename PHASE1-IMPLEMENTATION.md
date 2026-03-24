@@ -133,9 +133,9 @@ const config: Config = {
 export default config
 ```
 
-### 2.2 Install shadcn/ui CLI
+### 2.2 Install shadcn CLI
 ```bash
-npx shadcn-ui@latest init -d
+npx shadcn@latest init -d
 
 # When prompted, select:
 # Style: Default
@@ -152,31 +152,31 @@ This creates:
 ### 2.3 Install Common Components
 ```bash
 # Install Button component (needed for all pages)
-npx shadcn-ui@latest add button
+npx shadcn@latest add button
 
 # Install Card component (common for dashboard)
-npx shadcn-ui@latest add card
+npx shadcn@latest add card
 
 # Install Form components (needed for auth/booking in later phases)
-npx shadcn-ui@latest add form
+npx shadcn@latest add form
 
 # Install Input component (forms)
-npx shadcn-ui@latest add input
+npx shadcn@latest add input
 
 # Install Label component (forms)
-npx shadcn-ui@latest add label
+npx shadcn@latest add label
 
 # Install Dialog component (modals)
-npx shadcn-ui@latest add dialog
+npx shadcn@latest add dialog
 
 # Install Dropdown Menu (navigation)
-npx shadcn-ui@latest add dropdown-menu
+npx shadcn@latest add dropdown-menu
 
 # Install Navigation Menu (for header)
-npx shadcn-ui@latest add navigation-menu
+npx shadcn@latest add navigation-menu
 
 # Install Textarea (contact forms in Phase 2)
-npx shadcn-ui@latest add textarea
+npx shadcn@latest add textarea
 ```
 
 **Note:** Each `add` command imports the component source into `src/components/ui/` so you can customize as needed.
